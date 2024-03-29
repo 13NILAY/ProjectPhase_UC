@@ -1,5 +1,6 @@
 const User=require("../model/user")
 const bcrypt=require('bcryptjs')
+const jwt=require('jsonwebtoken')
 
 const signup=async(req,res)=>{
     try {
@@ -28,8 +29,6 @@ const log= async(req,res)=>{
             if(validpassword){
                 const token=jwt.sign({_id:user._id},process.env.TOKEN_KEY,{expiresIn: "1h"})
                 res.json({token,user});
-
-                sendmail();
                 
             }else{
                 return res.send("Incorrect")
