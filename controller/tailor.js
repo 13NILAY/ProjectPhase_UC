@@ -4,28 +4,49 @@ const jwt = require('jsonwebtoken');
 
 const signup=async(req,res)=>{
     try {
-       
-        const tailor=new Tailor({
-            username: req.body.username,
-            password: req.body.password,
-            email: req.body.email,
-            mobileno: req.body.mobileno,
-            serviceTypes: req.body.serviceTypes, 
-            experienceYears: req.body.experienceYears, 
-            portfolioUrl: req.body.portfolioUrl 
+     
+        const {
+            username,
+            password, 
+            email,
+            mobileno,
+            serviceTypes,
+            experienceYears,
+            portfolioUrl,
+            shopName,
+            location,
+            productPriceRange,
+            portfolioPhotos,
+            skills
+        } = req.body;
+
+    
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const tailor = new Tailor({
+            username,
+            password: hashedPassword, 
+            email,
+            mobileno,
+            serviceTypes,
+            experienceYears,
+            portfolioUrl,
+            shopName,
+            location,
+            productPriceRange,
+            portfolioPhotos,
+            skills
         });
-        
-        
-        tailor.password=await bcrypt.hash(tailor.password, 10);
-        
+
+        await tailor.save();
+
   
-        const tailorRecord=await tailor.save();
         res.send("Signup Successful");
     } catch (error) {
+      
         res.status(500).send(error);
     }
 };
-
 const login = async (req, res) => {
     try {
         const email = req.body.email;
@@ -63,3 +84,4 @@ module.exports={
     signup,
     login
 };
+
