@@ -17,7 +17,7 @@ const dbconnect= async()=>{
 const userRouter=require('./routes/user')
 app.use('/user',userRouter)
 
-const tailorRouter=require(',/routes/tailor')
+const tailorRouter=require('./routes/tailor')
 app.use('/tailor',tailorRouter)
 
 app.listen(port,()=>{
