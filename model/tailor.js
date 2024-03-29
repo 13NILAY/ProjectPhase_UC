@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
-const validator=require('validator')
-const Schema=mongoose.Schema
+const validator = require('validator'); 
 
 const tailorSchema = new mongoose.Schema({
     username: {
@@ -21,7 +20,7 @@ const tailorSchema = new mongoose.Schema({
         lowercase: true,
         validate: {
             validator: function(v) {
-                return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v);
+                return validator.isEmail(v); 
             },
             message: "Please enter a valid email"
         },
@@ -38,7 +37,7 @@ const tailorSchema = new mongoose.Schema({
         },
     },
     serviceTypes: {
-        type: [String], 
+        type: [String],
         required: true,
     },
     experienceYears: {
@@ -47,7 +46,6 @@ const tailorSchema = new mongoose.Schema({
     },
     portfolioUrl: {
         type: String,
-        required: false, 
         validate: {
             validator: function(v) {
                 return /^(http|https):\/\/[^ "]+$/.test(v);
@@ -55,10 +53,31 @@ const tailorSchema = new mongoose.Schema({
             message: "Please enter a valid URL"
         },
     },
+    shopName: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    location: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    productPriceRange: {
+        type: String, 
+        required: true,
+    },
+    portfolioPhotos: [{
+        type: String, 
+        required: false, 
+    }],
+    skills: {
+        fabric: [String],
+        clothingType: [String],
+    },
 }, {
-    timestamps: true, 
+    timestamps: true,
 });
-
 
 const Tailor = mongoose.model('Tailor', tailorSchema);
 
