@@ -4,7 +4,7 @@ const authenticatetoken=require('../middleware/authenticate')
 const express = require('express')
 const router = express.Router()
 
-router.post('/signup',signup)
-router.post('/login',login)
+router.post('/tailorsignup',signup)
+router.post('/tailorlogin',login)
 
 module.exports=router
