@@ -43,7 +43,32 @@ const log= async(req,res)=>{
         res.status(500).send(error)
     }
 }
+const getuser=async(req,res)=>{
+    try {
+        const user=await User.find()
+        res.json(user)
+    } catch (error) {
+        res.send("Error while fetching users")
+    }
+}
+const deluser=async(req,res)=>{
+    try {
+        const user=await User.findById(req.user._id)
+        const u1=await user.deleteOne()
+        res.send("User deleted successfully")
+    } catch (error) {
+        res.status(500).send("Error in deleting user")
+    }
+}
+const updateuser=async(req,res)=>{
+    try {
+        const user=await User.findByIdAndUpdate(req.user._id,req.body,{ new: true })
+        res.send("Update done")
+    } catch (error) {
+        res.status(500).send("Upadation not done")
+    }
+}
 module.exports={
     signup,
-    log
+    log,getuser,deluser,updateuser
 }
