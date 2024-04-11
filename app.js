@@ -21,6 +21,9 @@ app.use('/user',userRouter)
 const tailorRouter=require('./routes/tailor')
 app.use('/tailor',tailorRouter)
 
+const OrderRouter =require('./routes/order')
+app.use('./order',OrderRouter)
+
 app.listen(port,()=>{
     console.log("Running on port")
     dbconnect();
