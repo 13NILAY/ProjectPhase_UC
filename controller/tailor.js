@@ -40,7 +40,8 @@ const signup=async(req,res)=>{
 };
 const getTailorByEmail = async (req, res) => {
     try {
-        const tailor = await Tailor.findOne(req.body.email);
+        console.log(req.body.email);
+        const tailor = await Tailor.findOne({email:req.body.email});
         if (tailor === null) {
             return res.status(404).json({ message: 'Tailor not found' });
         }

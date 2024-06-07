@@ -37,9 +37,15 @@ const orderSchema=new Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'Tailor'
     },
-    user:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'User',
+    // user:{
+    //     type:mongoose.Schema.Types.ObjectId,
+    //     ref:'User',
+    // },
+    user_name:{
+        type:String
+    },
+    address:{
+        type:String
     },
     total_amount: {
         type: Number,
