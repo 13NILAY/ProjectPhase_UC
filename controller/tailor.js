@@ -38,6 +38,17 @@ const signup=async(req,res)=>{
         });
     }
 };
+const getTailorByEmail = async (req, res) => {
+    try {
+        const tailor = await Tailor.findOne(req.body.email);
+        if (tailor === null) {
+            return res.status(404).json({ message: 'Tailor not found' });
+        }
+        res.json(tailor);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
 const login = async (req, res) => {
     try {
         const email = req.body.email;
@@ -82,6 +93,7 @@ const login = async (req, res) => {
 
 module.exports={
     signup,
-    login
+    login,
+    getTailorByEmail
 };
 
