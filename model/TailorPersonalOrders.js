@@ -1,7 +1,7 @@
 const mongoose=require('mongoose');
 const Schema=mongoose.Schema
 
-const orderSchema=new Schema({
+const TailorPersonalOrderSchema=new Schema({
     outfit_type:{
         type:String,
         enum:["Dress","Blouse","Skirt","Pants","Other"],
@@ -12,11 +12,8 @@ const orderSchema=new Schema({
         enum:["Stitchng","Alteration"],
         required:true
     },
-    height:{
-        type:Number
-    },
-    width:{
-        type:Number
+    measurements:{
+        type:String
     },
     instructions:{
         type:String
@@ -32,10 +29,6 @@ const orderSchema=new Schema({
     },
     cloth_images:{
         type:[String]
-    },
-    tailor:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Tailor'
     },
     user:{
         type:mongoose.Schema.Types.ObjectId,

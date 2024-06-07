@@ -4,17 +4,26 @@ const jwt=require('jsonwebtoken')
 
 const signup=async(req,res)=>{
     try {
+        console.log(req.body);
         const user=new User({
             username:req.body.username,
             password:req.body.password,
             email:req.body.email,
-            mobileno:req.body.mobileno,
+            mobileno:req.body.mobileno
         })
         user.password=await bcrypt.hash(user.password,10)
-        const user1=await user.save()
-        res.send("Signup Successful");
+        const savedUserData=await user.save();
+        console.log(savedUserData);
+        res.status(200).json({
+            success:true
+        });
+
+        
     } catch (error) {
-        res.status(500).send(error)
+        res.status(500).json({
+            success:false,
+            error:error.message,
+        })
     }
 }
 
@@ -24,28 +33,48 @@ const log= async(req,res)=>{
         const password=req.body.password
 
         const user=await User.findOne({email:email})
+        console.log(user);
         if(user){
             const validpassword= await bcrypt.compare(password, user.password)
+            console.log(validpassword);
             if(validpassword){
-                const token=jwt.sign({_id:user._id},process.env.TOKEN_KEY,{expiresIn: "1h"})
-                res.json({token,user});
+                const accessToken=jwt.sign(
+                    {email:user.email},
+                    process.env.ACCESS_TOKEN_SECRET,
+                    {expiresIn: "1d"}
+                );
+                const refreshToken =jwt.sign(
+                    {email:user.email},
+                    process.env.REFRESH_TOKEN_SECRET,
+                    {expiresIn: "1y"}
+                )
+                //Saving refresh Token with current user
+                const u1= await User.findByIdAndUpdate(user._id,{refreshToken:refreshToken})
+                console.log(u1);
+                const u2=await User.findByIdAndUpdate(user._id);
+                res.cookie('jwt',refreshToken,{httpOnly:true,sameSite:'None',secure:true,maxAge:24*60*60*1000});
+                res.json({accessToken,u2});
                 
             }else{
                 return res.send("Incorrect")
             }
         }
         else{
-            return res.status(201).send("User not found")
+            return res.status(404).send("User not found")
         }
 
     }
     catch(error){
+        console.log(error);
         res.status(500).send(error)
     }
 }
+
 const getuser=async(req,res)=>{
     try {
         const user=await User.find()
+        console.log(user);
+        
         res.json(user)
     } catch (error) {
         res.send("Error while fetching users")

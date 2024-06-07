@@ -26,6 +26,10 @@ const userSchema=new Schema({
         type:Number,
         unique:true,
         required:true,
+    },
+    refreshToken:{
+        type:String,
+        unique:true,
     }
 })
 
